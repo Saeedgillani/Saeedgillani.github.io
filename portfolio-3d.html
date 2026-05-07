@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayed Muhammad Saeed Abbas — AI Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --c1:#00ffcc;--c2:#7b2fff;--c3:#ff3cac;--c4:#ffdd00;
+  --bg:#030308;--dark:#08080f;--glass:rgba(255,255,255,0.03);
+  --glow1:rgba(0,255,204,0.15);--glow2:rgba(123,47,255,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#e0e0f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden}
+
+/* CANVAS BG */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(3,3,8,0.6);border-bottom:1px solid rgba(0,255,204,0.08)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:13px;color:var(--c1);letter-spacing:3px;text-decoration:none}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;letter-spacing:2px;text-transform:uppercase;transition:color .3s;font-weight:600}
+.nav-links a:hover{color:var(--c1)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;text-align:center;padding:2rem}
+.hero-content{max-width:900px}
+.hero-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:11px;color:var(--c1);border:1px solid rgba(0,255,204,0.3);padding:8px 20px;letter-spacing:4px;margin-bottom:2.5rem;animation:fadeIn 1s ease both;position:relative;overflow:hidden}
+.hero-badge::before{content:'';position:absolute;left:-100%;top:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,204,0.1),transparent);animation:shimmer 3s infinite 1s}
+@keyframes shimmer{to{left:100%}}
+
+.hero h1{font-family:'Orbitron',monospace;font-size:clamp(2rem,5vw,4.5rem);font-weight:900;line-height:1.05;margin-bottom:1.5rem;animation:fadeUp .8s ease .2s both}
+.hero h1 .line1{display:block;color:#fff;text-shadow:0 0 40px rgba(255,255,255,0.1)}
+.hero h1 .line2{display:block;background:linear-gradient(135deg,var(--c1),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.hero-sub{font-size:1.1rem;color:rgba(255,255,255,0.45);letter-spacing:1px;line-height:1.9;max-width:600px;margin:0 auto 3rem;animation:fadeUp .8s ease .4s both;font-weight:300}
+
+.hero-btns{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .6s both}
+.btn-glow{display:inline-block;padding:14px 36px;font-family:'Orbitron',monospace;font-size:12px;letter-spacing:2px;text-decoration:none;position:relative;transition:all .3s;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%)}
+.btn-primary-glow{background:var(--c1);color:#000;font-weight:700}
+.btn-primary-glow:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,255,204,0.3)}
+.btn-ghost-glow{background:transparent;color:var(--c1);border:1px solid rgba(0,255,204,0.4)}
+.btn-ghost-glow:hover{background:rgba(0,255,204,0.08);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,255,204,0.15)}
+
+/* STATS BAR */
+.stats-bar{display:flex;justify-content:center;gap:4rem;margin-top:5rem;padding-top:3rem;border-top:1px solid rgba(255,255,255,0.05);animation:fadeUp .8s ease .8s both;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:700;color:var(--c1);display:block;text-shadow:0 0 20px rgba(0,255,204,0.5)}
+.stat-l{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+/* SECTION */
+section{position:relative;z-index:1;padding:8rem 0}
+.container{max-width:1200px;margin:0 auto;padding:0 3rem}
+.sec-eyebrow{font-family:'Orbitron',monospace;font-size:10px;color:var(--c1);letter-spacing:4px;text-transform:uppercase;margin-bottom:1.2rem;opacity:.7}
+.sec-title{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:#fff;margin-bottom:1rem;line-height:1.2}
+.sec-line{width:60px;height:2px;background:linear-gradient(90deg,var(--c1),transparent);margin:1.5rem 0 3rem}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start}
+.about-p{color:rgba(255,255,255,0.5);line-height:1.9;font-size:1.05rem;margin-bottom:1.2rem;font-weight:300}
+.about-p strong{color:rgba(255,255,255,0.85);font-weight:600}
+.skills-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sk{background:rgba(255,255,255,0.02);border:1px solid rgba(0,255,204,0.08);padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:1px;font-weight:600;transition:all .3s;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%)}
+.sk:hover{border-color:rgba(0,255,204,0.3);color:var(--c1);background:rgba(0,255,204,0.04);transform:translateX(4px)}
+.sk-dot{width:5px;height:5px;background:var(--c1);flex-shrink:0;box-shadow:0 0 8px var(--c1)}
+
+/* 3D CARD SCENE */
+.projects-scene{perspective:1200px}
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.proj-3d{transform-style:preserve-3d;transition:transform .5s cubic-bezier(.16,1,.3,1);cursor:default}
+.proj-3d:hover{transform:rotateY(-6deg) rotateX(3deg) translateZ(20px)}
+.proj-card{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(0,255,204,0.1);padding:2.5rem;position:relative;overflow:hidden;height:100%;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px))}
+.proj-card::before{content:'';position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 24px 24px 0;border-color:transparent rgba(0,255,204,0.3) transparent transparent}
+.proj-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(123,47,255,0.06),transparent 60%);pointer-events:none}
+
+.proj-featured{grid-column:1/-1}
+.proj-featured .proj-card{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.proj-featured .proj-3d:hover{transform:rotateY(-3deg) rotateX(2deg) translateZ(10px)}
+
+.proj-num{font-family:'Orbitron',monospace;font-size:10px;color:rgba(0,255,204,0.4);letter-spacing:3px;margin-bottom:1.2rem}
+.proj-title{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:#fff;margin-bottom:1rem;line-height:1.4}
+.proj-desc{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.8;margin-bottom:1.5rem;font-weight:300}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.pt{font-family:'Orbitron',monospace;font-size:9px;padding:5px 10px;letter-spacing:1px}
+.pt-c{background:rgba(0,255,204,0.07);color:var(--c1);border:1px solid rgba(0,255,204,0.2)}
+.pt-p{background:rgba(123,47,255,0.07);color:#a78bfa;border:1px solid rgba(123,47,255,0.2)}
+.pt-g{background:rgba(0,255,100,0.07);color:#4ade80;border:1px solid rgba(0,255,100,0.2)}
+.pt-a{background:rgba(255,200,0,0.07);color:#fbbf24;border:1px solid rgba(255,200,0,0.2)}
+
+.gh-link{display:inline-flex;align-items:center;gap:8px;font-family:'Orbitron',monospace;font-size:10px;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:2px;transition:color .2s}
+.gh-link:hover{color:var(--c1)}
+.gh-link svg{width:14px;height:14px}
+
+.feat-badge{display:inline-block;font-family:'Orbitron',monospace;font-size:9px;color:var(--c1);border:1px solid rgba(0,255,204,0.3);padding:4px 12px;letter-spacing:2px;margin-bottom:1.2rem}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:1.5rem}
+.metric-box{background:rgba(0,255,204,0.03);border:1px solid rgba(0,255,204,0.1);padding:14px}
+.metric-v{font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--c1);display:block;text-shadow:0 0 15px rgba(0,255,204,0.4)}
+.metric-l{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px}
+.model-table{margin-top:1.5rem;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);padding:1.2rem}
+.model-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px}
+.model-row:last-child{border-bottom:none}
+.model-row span:first-child{color:rgba(255,255,255,0.35);font-weight:300}
+.model-row span:last-child{font-family:'Orbitron',monospace;font-size:11px;color:var(--c1)}
+.model-row.best span:last-child{color:#4ade80;text-shadow:0 0 10px rgba(74,222,128,0.4)}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:5rem;align-items:start}
+.contact-p{color:rgba(255,255,255,0.4);line-height:1.9;font-size:1.05rem;margin-bottom:1rem;font-weight:300}
+.contact-p strong{color:rgba(255,255,255,0.8)}
+.loc{font-family:'Orbitron',monospace;font-size:11px;color:var(--c1);letter-spacing:2px;margin-top:1.5rem}
+.clinks{display:flex;flex-direction:column;gap:1rem}
+.clink{display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);text-decoration:none;color:#fff;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.clink:hover{border-color:rgba(0,255,204,0.3);transform:translateX(6px);background:rgba(0,255,204,0.04)}
+.clink-ico{width:42px;height:42px;background:rgba(0,255,204,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.clink-ico svg{width:18px;height:18px;fill:var(--c1)}
+.clink-l{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1px}
+.clink-v{font-size:14px;color:#fff;font-weight:600;letter-spacing:.5px}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 3rem;text-align:center;font-family:'Orbitron',monospace;font-size:10px;color:rgba(255,255,255,0.2);letter-spacing:2px}
+
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* FLOATING PARTICLES */
+.particle{position:fixed;pointer-events:none;border-radius:50%;z-index:0}
+
+/* SCAN LINE */
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,204,0.005) 2px,rgba(0,255,204,0.005) 4px);pointer-events:none;z-index:999}
+
+@media(max-width:768px){
+  .about-grid,.proj-featured .proj-card,.contact-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  nav{padding:1rem 1.5rem}
+  .container{padding:0 1.5rem}
+  .nav-links{gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a href="#" class="nav-logo">S·M·S·A</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">// AI &amp; MACHINE LEARNING ENGINEER</div>
+    <h1>
+      <span class="line1">Sayed Muhammad</span>
+      <span class="line2">Saeed Abbas</span>
+    </h1>
+    <p class="hero-sub">
+      Building intelligent systems at the frontier of deep learning, computer vision &amp; edge AI — from medical imaging to real-time IoT inference. University of Oulu, Finland.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-glow btn-primary-glow">Explore Work</a>
+      <a href="https://github.com/Saeedgillani" target="_blank" class="btn-glow btn-ghost-glow">GitHub</a>
+      <a href="https://www.linkedin.com/in/sayed-saeed-abbas/" target="_blank" class="btn-glow btn-ghost-glow">LinkedIn</a>
+    </div>
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-n" data-target="3">0</span><span class="stat-l">AI / ML Projects</span></div>
+      <div class="stat"><span class="stat-n" data-target="96.4" data-dec="1">0</span><span class="stat-l">Model Accuracy %</span></div>
+      <div class="stat"><span class="stat-n" data-target="876" data-prefix="0.">0</span><span class="stat-l">Top Kappa Score</span></div>
+      <div class="stat"><span class="stat-n" data-target="1" data-suffix="ms">0</span><span class="stat-l">Edge Inference</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">01 — Identity</div>
+      <h2 class="sec-title">Who I Am</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="about-grid reveal">
+      <div>
+        <p class="about-p">I'm a <strong>graduate student at the University of Oulu</strong>, Finland, pushing the boundaries of AI across medical imaging, edge ML, and multimodal systems.</p>
+        <p class="about-p">My expertise spans the full ML pipeline — from <strong>sensor-level data collection</strong> through model training with cutting-edge architectures, to <strong>real-world deployment</strong> on constrained edge hardware.</p>
+        <p class="about-p">Whether it's classifying diabetic retinopathy from retinal fundus images with ensemble deep learning, or detecting falls in milliseconds on a microcontroller — I build AI that operates in the real world.</p>
+        <a href="https://www.linkedin.com/in/sayed-saeed-abbas/" target="_blank" class="btn-glow btn-ghost-glow" style="margin-top:1.5rem;font-size:11px">View Profile →</a>
+      </div>
+      <div>
+        <p style="font-family:'Orbitron',monospace;font-size:10px;color:rgba(0,255,204,0.5);letter-spacing:3px;margin-bottom:1.2rem">// TECH STACK</p>
+        <div class="skills-wrap">
+          <div class="sk"><span class="sk-dot"></span>Python</div>
+          <div class="sk"><span class="sk-dot"></span>PyTorch</div>
+          <div class="sk"><span class="sk-dot"></span>TensorFlow</div>
+          <div class="sk"><span class="sk-dot"></span>scikit-learn</div>
+          <div class="sk"><span class="sk-dot"></span>Edge Impulse</div>
+          <div class="sk"><span class="sk-dot"></span>TinyML</div>
+          <div class="sk"><span class="sk-dot"></span>Raspberry Pi</div>
+          <div class="sk"><span class="sk-dot"></span>Arduino IDE</div>
+          <div class="sk"><span class="sk-dot"></span>GradCAM / XAI</div>
+          <div class="sk"><span class="sk-dot"></span>Transfer Learning</div>
+          <div class="sk"><span class="sk-dot"></span>IoT Systems</div>
+          <div class="sk"><span class="sk-dot"></span>Git / GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:rgba(0,0,0,0.3)">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">02 — Work</div>
+      <h2 class="sec-title">Selected Projects</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="projects-scene">
+      <div class="projects-grid">
+
+        <!-- FEATURED -->
+        <div class="proj-3d proj-featured reveal">
+          <div class="proj-card">
+            <div>
+              <span class="feat-badge">★ FEATURED PROJECT</span>
+              <p class="proj-num">01 / DEEP LEARNING · 2024</p>
+              <h3 class="proj-title">Transfer Learning for Diabetic Retinopathy Classification</h3>
+              <p class="proj-desc">Fine-tuned VGG16, ResNet18/34, and EfficientNet on the DeepDRiD dataset for 5-level DR severity classification. Implemented dual-image (left+right eye) pipelines, self-attention and channel-attention mechanisms, ensemble learning (bagging, boosting, stacking), and GradCAM for model explainability.</p>
+              <div class="proj-tags">
+                <span class="pt pt-c">PyTorch</span>
+                <span class="pt pt-p">Transfer Learning</span>
+                <span class="pt pt-g">ResNet / VGG16</span>
+                <span class="pt pt-a">GradCAM</span>
+                <span class="pt pt-c">Ensemble</span>
+                <span class="pt pt-p">Medical Imaging</span>
+              </div>
+              <a href="https://github.com/Saeedgillani" target="_blank" class="gh-link">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                VIEW ON GITHUB
+              </a>
+            </div>
+            <div>
+              <div class="metrics-grid">
+                <div class="metric-box"><span class="metric-v">0.876</span><span class="metric-l">Top Kappa Score</span></div>
+                <div class="metric-box"><span class="metric-v">5</span><span class="metric-l">DR Severity Levels</span></div>
+                <div class="metric-box"><span class="metric-v">4</span><span class="metric-l">Architectures</span></div>
+                <div class="metric-box"><span class="metric-v">XAI</span><span class="metric-l">GradCAM Explainability</span></div>
+              </div>
+              <div class="model-table">
+                <p style="font-family:'Orbitron',monospace;font-size:9px;color:rgba(0,255,204,0.4);letter-spacing:3px;margin-bottom:10px">// MODEL BENCHMARK</p>
+                <div class="model-row"><span>ResNet18</span><span>κ = 0.8444</span></div>
+                <div class="model-row"><span>VGG16</span><span>κ = 0.8345</span></div>
+                <div class="model-row"><span>ResNet34</span><span>κ = 0.8357</span></div>
+                <div class="model-row"><span>Self-Attention</span><span>κ = 0.8456</span></div>
+                <div class="model-row best"><span>Ensemble Bagging ★</span><span>κ = 0.876</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT 2 -->
+        <div class="proj-3d reveal">
+          <div class="proj-card">
+            <p class="proj-num">02 / IOT + TINYML · 2024</p>
+            <h3 class="proj-title">IoT Activity Recognition &amp; Fall Detection System</h3>
+            <p class="proj-desc">End-to-end wearable IoT system on Raspberry Pi Pico W with LSM6DS3 IMU. Detects walking, running, sitting, and falling in real-time using an on-device TinyML model trained via Edge Impulse. Live Wi-Fi dashboard streams sensor data with instant fall alerts.</p>
+            <div class="proj-tags">
+              <span class="pt pt-c">TinyML</span>
+              <span class="pt pt-p">Edge Impulse</span>
+              <span class="pt pt-g">Raspberry Pi</span>
+              <span class="pt pt-a">Python</span>
+              <span class="pt pt-c">IoT</span>
+            </div>
+            <div class="metrics-grid" style="margin-bottom:1.5rem">
+              <div class="metric-box"><span class="metric-v">96.4%</span><span class="metric-l">Accuracy</span></div>
+              <div class="metric-box"><span class="metric-v">1ms</span><span class="metric-l">Inference Time</span></div>
+            </div>
+            <a href="https://github.com/Saeedgillani" target="_blank" class="gh-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              VIEW ON GITHUB
+            </a>
+          </div>
+        </div>
+
+        <!-- PROJECT 3 -->
+        <div class="proj-3d reveal">
+          <div class="proj-card">
+            <p class="proj-num">03 / MULTIMODAL AI · 2024</p>
+            <h3 class="proj-title">Multimodal Road Prediction</h3>
+            <p class="proj-desc">Deep learning pipeline fusing visual and sensor modalities for road condition prediction. Explored multi-input fusion architectures to integrate heterogeneous data streams for accurate road surface classification and condition forecasting.</p>
+            <div class="proj-tags">
+              <span class="pt pt-c">Python</span>
+              <span class="pt pt-p">Deep Learning</span>
+              <span class="pt pt-g">Multimodal AI</span>
+              <span class="pt pt-a">Computer Vision</span>
+            </div>
+            <a href="https://github.com/Saeedgillani" target="_blank" class="gh-link" style="margin-top:1rem">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+              VIEW ON GITHUB
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="sec-eyebrow">03 — Connect</div>
+      <h2 class="sec-title">Let's Build Something</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="contact-grid reveal">
+      <div>
+        <p class="contact-p">I'm actively seeking <strong>entry-level AI/ML roles</strong> — remote or EU-based. If you're building intelligent systems and need someone who cares deeply about both the math and the real-world impact, let's talk.</p>
+        <p class="contact-p">Open to full-time positions, internships, and contract roles. Comfortable across time zones.</p>
+        <div class="loc">📍 Oulu, Finland · Open to Remote / EU Relocation</div>
+      </div>
+      <div class="clinks">
+        <a href="https://github.com/Saeedgillani" target="_blank" class="clink">
+          <div class="clink-ico">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 013-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </div>
+          <div><div class="clink-l">GITHUB</div><div class="clink-v">github.com/Saeedgillani</div></div>
+        </a>
+        <a href="https://www.linkedin.com/in/sayed-saeed-abbas/" target="_blank" class="clink">
+          <div class="clink-ico">
+            <svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM3.56 20.45h3.55V9H3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          </div>
+          <div><div class="clink-l">LINKEDIN</div><div class="clink-v">sayed-saeed-abbas</div></div>
+        </a>
+        <a href="mailto:sabbas24@student.oulu.fi" class="clink">
+          <div class="clink-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00ffcc" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div><div class="clink-l">EMAIL</div><div class="clink-v">sabbas24@student.oulu.fi</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 SAYED MUHAMMAD SAEED ABBAS · AI ENGINEER · UNIVERSITY OF OULU, FINLAND</footer>
+
+<script>
+(function(){
+  /* ---- CANVAS: Neural network particle system ---- */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], mouse = {x:0, y:0};
+  const NODE_COUNT = 80;
+  const MAX_DIST = 140;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Node {
+    constructor(){this.reset(true)}
+    reset(init){
+      this.x = Math.random()*W;
+      this.y = init ? Math.random()*H : -10;
+      this.vx = (Math.random()-.5)*.4;
+      this.vy = (Math.random()-.5)*.4;
+      this.r = Math.random()*2+.5;
+      this.alpha = Math.random()*.5+.1;
+      this.pulse = Math.random()*Math.PI*2;
+    }
+    update(){
+      this.x += this.vx;
+      this.y += this.vy;
+      this.pulse += .02;
+      const a = this.alpha*(0.7+0.3*Math.sin(this.pulse));
+      if(this.x<-10||this.x>W+10||this.y<-10||this.y>H+10) this.reset(false);
+      /* mouse repel */
+      const dx = this.x-mouse.x, dy = this.y-mouse.y;
+      const d = Math.sqrt(dx*dx+dy*dy);
+      if(d < 100){
+        this.vx += dx/d*.3;
+        this.vy += dy/d*.3;
+      }
+      this.vx *= .995; this.vy *= .995;
+      return a;
+    }
+    draw(a){
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(0,255,204,${a})`;
+      ctx.fill();
+    }
+  }
+
+  for(let i=0;i<NODE_COUNT;i++) nodes.push(new Node());
+
+  window.addEventListener('mousemove', e=>{mouse.x=e.clientX; mouse.y=e.clientY});
+
+  function drawConnections(){
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          const alpha=(1-d/MAX_DIST)*0.08;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle=`rgba(0,255,204,${alpha})`;
+          ctx.lineWidth=.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  /* Floating hex shapes */
+  const hexes = Array.from({length:8},()=>({
+    x:Math.random()*1400-100, y:Math.random()*3000,
+    r:Math.random()*60+30, speed:Math.random()*.3+.1,
+    rot:Math.random()*Math.PI, rotSpeed:(Math.random()-.5)*.003,
+    alpha:Math.random()*.04+.01
+  }));
+
+  function drawHex(h){
+    ctx.save();
+    ctx.translate(h.x+window.scrollX*.1, h.y);
+    ctx.rotate(h.rot);
+    ctx.beginPath();
+    for(let i=0;i<6;i++){
+      const a=Math.PI/3*i;
+      i===0?ctx.moveTo(Math.cos(a)*h.r,Math.sin(a)*h.r):ctx.lineTo(Math.cos(a)*h.r,Math.sin(a)*h.r);
+    }
+    ctx.closePath();
+    ctx.strokeStyle=`rgba(123,47,255,${h.alpha})`;
+    ctx.lineWidth=1;
+    ctx.stroke();
+    ctx.restore();
+    h.rot+=h.rotSpeed;
+    h.y-=h.speed;
+    if(h.y<-100) h.y=H+100;
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    drawConnections();
+    hexes.forEach(drawHex);
+    nodes.forEach(n=>{const a=n.update(); n.draw(a);});
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  /* ---- COUNTER ANIMATION ---- */
+  function animateCounters(){
+    document.querySelectorAll('.stat-n[data-target]').forEach(el=>{
+      const target=parseFloat(el.dataset.target);
+      const dec=parseInt(el.dataset.dec||0);
+      const prefix=el.dataset.prefix||'';
+      const suffix=el.dataset.suffix||'';
+      let current=0;
+      const step=target/60;
+      const timer=setInterval(()=>{
+        current=Math.min(current+step, target);
+        el.textContent=prefix+current.toFixed(dec)+suffix;
+        if(current>=target) clearInterval(timer);
+      },16);
+    });
+  }
+  setTimeout(animateCounters, 800);
+
+  /* ---- SCROLL REVEAL ---- */
+  const reveals=document.querySelectorAll('.reveal');
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+  },{threshold:.1});
+  reveals.forEach(r=>observer.observe(r));
+
+  /* ---- 3D CARD TILT ON MOUSEMOVE ---- */
+  document.querySelectorAll('.proj-3d').forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const rect=card.getBoundingClientRect();
+      const cx=rect.left+rect.width/2;
+      const cy=rect.top+rect.height/2;
+      const rx=((e.clientY-cy)/rect.height)*10;
+      const ry=-((e.clientX-cx)/rect.width)*10;
+      card.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) translateZ(20px)`;
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+    });
+  });
+
+  /* ---- TYPING CURSOR on hero h1 ---- */
+  const line2 = document.querySelector('.hero h1 .line2');
+  if(line2){
+    const text = line2.textContent;
+    line2.textContent='';
+    let i=0;
+    setTimeout(()=>{
+      const t=setInterval(()=>{
+        line2.textContent=text.slice(0,++i);
+        if(i>=text.length) clearInterval(t);
+      },60);
+    },600);
+  }
+
+})();
+</script>
+</body>
+</html>
